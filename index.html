@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+
+		<title>Jusufi.info</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
+		<script src="jquery.carouFredSel-6.2.0-packed.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('#slider').carouFredSel({
+					width: '100%',
+					align: false,
+					items: 3,
+					items: {
+						width: $('#wrapper').width() * 0.15,
+						height: 555,
+						visible: 1,
+						minimum: 1
+					},
+					scroll: {
+						items: 1,
+						timeoutDuration : 5000,
+						onBefore: function(data) {
+			
+							//	find current and next slide
+							var currentSlide = $('.slide.active', this),
+								nextSlide = data.items.visible,
+								_width = $('#wrapper').width();
+			
+							//	resize currentslide to small version
+							currentSlide.stop().animate({
+								width: _width * 0.15
+							});		
+							currentSlide.removeClass( 'active' );
+			
+							//	hide current block
+							data.items.old.add( data.items.visible ).find( '.slide-block' ).stop().fadeOut();					
+			
+							//	animate clicked slide to large size
+							nextSlide.addClass( 'active' );
+							nextSlide.stop().animate({
+								width: _width * 0.7
+							});						
+						},
+						onAfter: function(data) {
+							//	show active slide block
+							data.items.visible.last().find( '.slide-block' ).stop().fadeIn();
+						}
+					},
+					onCreate: function(data){
+			
+						//	clone images for better sliding and insert them dynamacly in slider
+						var newitems = $('.slide',this).clone( true ),
+							_width = $('#wrapper').width();
+
+						$(this).trigger( 'insertItem', [newitems, newitems.length, false] );
+			
+						//	show images 
+						$('.slide', this).fadeIn();
+						$('.slide:first-child', this).addClass( 'active' );
+						$('.slide', this).width( _width * 0.15 );
+			
+						//	enlarge first slide
+						$('.slide:first-child', this).animate({
+							width: _width * 0.7
+						});
+			
+						//	show first title block and hide the rest
+						$(this).find( '.slide-block' ).hide();
+						$(this).find( '.slide.active .slide-block' ).stop().fadeIn();
+					}
+				});
+			
+				//	Handle click events
+				$('#slider').children().click(function() {
+					$('#slider').trigger( 'slideTo', [this] );
+				});
+			
+				//	Enable code below if you want to support browser resizing
+				$(window).resize(function(){
+			
+					var slider = $('#slider'),
+						_width = $('#wrapper').width();
+			
+					//	show images
+					slider.find( '.slide' ).width( _width * 0.15 );
+			
+					//	enlarge first slide
+					slider.find( '.slide.active' ).width( _width * 0.7 );
+			
+					//	update item width config
+					slider.trigger( 'configuration', ['items.width', _width * 0.15] );
+				});
+
+			});
+		</script>
+		<style type="text/css">
+			html, body {
+				padding: 0;
+				margin: 0;
+			}
+			body {
+				background: #f9f9f3;
+			}
+			body * {
+				font-family: Arial, Geneva, SunSans-Regular, sans-serif;
+				font-size: 14px;
+				color: #222;
+				line-height: 20px;
+			}
+
+			#wrapper {
+				height: 100%;
+				width: 100%;
+				min-height: 600px;
+				min-width: 900px;
+				padding-top: 1px;
+			}
+			#slider {
+				margin: 0 0 0 0;
+				height: 600px;
+				overflow: hidden;
+				background: url(img/ajax-loader.gif) center center no-repeat;
+			}
+			
+			#slider .slide {
+				position: relative;
+				display: none;
+				height: 600px;
+				float: left;
+				background-position: center right;
+				cursor: pointer;
+				border-left: 1px solid #fff;
+			}
+			
+			#slider .slide:first-child {
+				border: none;
+			}
+			
+			#slider .slide.active {
+				cursor: default;
+			}
+			
+			#slider .slide-block {
+				position: absolute;
+				left: 40px;
+				bottom: 75px;
+				display: inline-block;
+				width: 435px;
+				background-color: #fff;
+				background-color: rgba(255,255,255, 0.8);	
+				padding: 20px;
+				font-size: 14px;
+				color: #134B94;
+				border: 1px solid #fff;
+				overflow: hidden;
+				border-radius: 4px;
+			}
+			
+			#slider .slide-block h4 {
+				font-size: 36px;
+				font-weight: bold;
+				margin: 0 0 10px 0;
+				line-height: 1;
+			}
+			#slider .slide-block p {
+				margin: 0;
+			}
+			#banner {
+				height: 100px;
+				background-color: #244aa5;
+			}
+			
+			#logo a {
+				line-height: 2.5;
+				float: left;
+				margin-left: 40px;
+				font-size: 40px;
+				color: #d0a650;
+			}
+			#logo a:hover {
+				color: #FAFAD2;
+			}
+			#telefoni {
+				line-height: 3;
+				float: right;
+				margin-right: 40px;
+				font-size: 14px;
+				color: #FAFAD2;
+			}
+			#telefoni a {
+				color: #FAFAD2;
+			}
+			#telefoni a:hover {
+				color: #d0a650;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="banner">
+			<div id="logo"><a href="https://jusufi.info">Jusufi.info</a></div>
+			<div id="telefoni"><i class="fa fa-mobile" style="font-size:24px;color: #FAFAD2;"></i> +383 49 641 647 <br /> 
+				<i class="fa fa-envelope" style="font-size:14px;color:#FAFAD2"></i> <a href="mailto:fetah@jusufi.info"> fetah@jusufi.info</a></div>
+		
+		<div id="wrapper">
+			<div id="slider">
+				<div class="slide" style="background-image: url(img/1.jpg);">
+					<div class="slide-block">
+						<h4>Design</h4>
+						<p>.</p>
+					</div>
+				</div>
+		
+				<div class="slide" style="background-image: url(img/2.jpg);">
+					<div class="slide-block">
+						<h4>Servers</h4>
+						<p>.</p>
+					</div>
+				</div>
+		
+				<div class="slide" style="background-image: url(img/3.jpg);">
+					<div class="slide-block">
+						<h4>Web Development</h4>
+						<p>.</p>
+					</div>
+				</div>
+		
+				<div class="slide" style="background-image: url(img/4.jpg);">
+					<div class="slide-block">
+						<h4>Coding</h4>
+						<p>.</p>
+					</div>
+				</div>
+
+				<div class="slide" style="background-image: url(img/5.jpg);">
+					<div class="slide-block">
+						<h4>Agile Development</h4>
+						<p>.</p>
+					</div>
+				</div>
+
+				<div class="slide" style="background-image: url(img/6.jpg);">
+					<div class="slide-block">
+						<h4>Networking</h4>
+						<p>.</p>
+					</div>
+				</div>
+
+				<div class="slide" style="background-image: url(img/7.jpg);">
+					<div class="slide-block">
+						<h4>Surveillance Security System</h4>
+						<p>.</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</body>
+</html>
